@@ -42,6 +42,7 @@ export const loader = async ({ request }) => {
             title
             handle
             status
+            tags
             images(first: 1) {
               edges {
                 node {
@@ -105,6 +106,11 @@ export default function OptionSetPage() {
       title: "Option Set 7",
     },
   ]);
+  const [formData, setFormData] = useState([]);
+
+  function handleNextChange() {
+    console.log("Form Data:", formData);
+  }
 
   return (
     <Page>
@@ -127,8 +133,13 @@ export default function OptionSetPage() {
           label={"Setup your field"}
           active={isModalActive}
           handleChange={handleModalChange}
+          onNext={handleNextChange}
         >
-          <TabComponent products={products} />
+          <TabComponent
+            products={products}
+            formData={formData}
+            setFormData={setFormData}
+          />
         </ModalComponent>
       )}
     </Page>

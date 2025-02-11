@@ -4,10 +4,9 @@ import ModalComponent from "./Modal";
 import { TextInputField, CheckboxField } from "./InputFields";
 import "../styles/index.css";
 
-function TabComponent({ products }) {
+function TabComponent({ products, formData, setFormData }) {
   const [selected, setSelected] = useState(0);
   const [isModalActive, setIsModalActive] = useState(false);
-
   const handleModalChange = useCallback(
     () => setIsModalActive(!isModalActive),
     [isModalActive],
@@ -42,11 +41,11 @@ function TabComponent({ products }) {
   return (
     <div className="tab-container">
       <div className="tab-header">
-        <Tabs tabs={tabs} selected={selected} onSelect={handleTabSelect}></Tabs>
+        <Tabs tabs={tabs} selected={selected} onSelect={handleTabSelect} />
       </div>
       <div className="tab-body">
         {selected === 0 ? (
-          <TabOneContainer products={products} />
+          <TabOneContainer fformData={formData} setFormData={setFormData} />
         ) : selected === 1 ? (
           <TabTwoContainer
             isModalActive={isModalActive}
@@ -56,14 +55,20 @@ function TabComponent({ products }) {
         ) : selected === 2 ? (
           <TabThreeContainer products={products} />
         ) : (
-          <TabOneContainer products={products} />
+          <TabOneContainer products={products} setFormData={setFromData} />
         )}
       </div>
     </div>
   );
 }
 
-const TabOneContainer = ({ products }) => {
+const TabOneContainer = ({ formData, setFormData }) => {
+  const [value, setValue] = useState("");
+
+  function handleChange(e) {
+    setValue(e.target.value);
+  }
+  setFormData(value);
   return (
     <LegacyCard.Section>
       <Text as="h6" variant={"headingMd"}>
@@ -80,7 +85,11 @@ const TabOneContainer = ({ products }) => {
               justifyContent: "space-between",
             }}
           >
-            <TextInputField label={"Label on Product"} />
+            <TextInputField
+              label={"Label on Product"}
+              value={value}
+              onChange={handleChange}
+            />
             <Text>
               This is the name of the option that appears on the product page as
               an option a customer can select. It should describe the option to
@@ -94,7 +103,7 @@ const TabOneContainer = ({ products }) => {
               loading="lazy"
               style={{ height: "100%", width: "100%" }}
               src="https://img.freepik.com/free-vector/icon-element-online-shop-business_272375-3595.jpg?t=st=1737626570~exp=1737630170~hmac=5b5fc4df1f61dc1bd92673978ec5af44450c0a0910fd4dd2f431caf0970c8d47&w=740"
-              alt=""
+              alt="Image-Vector"
             />
           </div>
         </Grid.Cell>

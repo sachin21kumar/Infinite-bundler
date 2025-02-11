@@ -1,6 +1,6 @@
 import { Modal, TextContainer } from "@shopify/polaris";
 
-function ModalComponent({ label, active, handleChange, children }) {
+function ModalComponent({ label, active, handleChange, children, onNext }) {
   return (
     <Modal
       open={active}
@@ -9,7 +9,7 @@ function ModalComponent({ label, active, handleChange, children }) {
       size="large"
       primaryAction={{
         content: "Next",
-        onAction: handleChange,
+        onAction: onNext,
       }}
       secondaryActions={[
         {

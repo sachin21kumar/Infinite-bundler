@@ -5,7 +5,7 @@ function TextInputField({ label, value, onChange }) {
   return (
     <input
       type="text"
-      placeholder="Search..."
+      placeholder={label}
       value={value}
       onChange={onChange}
       autoComplete="off"

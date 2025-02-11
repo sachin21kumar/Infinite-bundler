@@ -78,6 +78,33 @@ export default function OptionSetPage() {
     [],
   );
   const products = useLoaderData();
+  const [cardData, setCardData] = useState([
+    {
+      id: "1",
+      title: "crossbow-custom-leather-belt-blank size varinat",
+    },
+    {
+      id: "2",
+      title: "Option Set 5",
+    },
+    {
+      id: "3",
+      title: "Option Set 3",
+    },
+    {
+      id: "4",
+      title:
+        "belt page optioncrossbow-custom-leather-belt-blank size varinat crossbow-custom-leather-belt-blank size varinat",
+    },
+    {
+      id: "5",
+      title: "RING & LOOP BELT",
+    },
+    {
+      id: "5",
+      title: "Option Set 7",
+    },
+  ]);
 
   return (
     <Page>
@@ -87,11 +114,9 @@ export default function OptionSetPage() {
       </TitleBar>
       <Layout>
         <Layout.Section>
-          <CollapsibleCard />
-          <CollapsibleCard />
-          <CollapsibleCard />
-          <CollapsibleCard />
-          <CollapsibleCard />
+          {cardData?.map(({ id, title }, index) => {
+            return <CollapsibleCard id={id} title={title} />;
+          })}
         </Layout.Section>
         <Layout.Section>
           <MediaCardComponent />
@@ -110,52 +135,61 @@ export default function OptionSetPage() {
   );
 }
 
-function CollapsibleCard() {
-  const [open, setOpen] = useState(false);
-  const handleToggle = useCallback(() => setOpen((open) => !open), []);
+function CollapsibleCard({ id, title }) {
+  const [openCollapsibleCard, setOpenCollapsibleCard] = useState(false);
+  const handleToggle = useCallback(
+    () => setOpenCollapsibleCard((openCollapsibleCard) => !openCollapsibleCard),
+    [],
+  );
   const [fields, setFields] = useState([0]);
+
   const handleAddField = () => {
     setFields((prevFields) => [...prevFields, fields.length]);
   };
-
   // Remove a specific field
   const handleRemoveField = (index) => {
     setFields((prevFields) => prevFields.filter((_, i) => i !== index));
   };
 
+  // Action Button
+  const actions = [
+    {
+      content: "Duplicate",
+      onAction: () => console.log("Duplicated!"),
+    },
+    {
+      content: "Remove",
+      onAction: () => console.log("Removed!"),
+    },
+  ];
+
   return (
-    <div className="dropdown-card" onClick={handleToggle}>
+    <div className="dropdown-card">
       <div className="dropdown-card-header">
-        <div className="dropdown-card-header">
+        <div className="dropdown-card-header" onClick={handleToggle}>
           <span>
-            {open ? (
+            {openCollapsibleCard ? (
               <Icon source={ChevronDownIcon} tone="base" />
             ) : (
               <Icon source={ChevronRightIcon} tone="base" />
             )}
           </span>
-          <Text variant="headingsm" as="p">
-            Online store dashboard
+          <Text variant="headingsm" as="p" style={{ color: "blue" }}>
+            {title}
           </Text>
         </div>
-        <Button>
-          <ActionListInPopover />
-        </Button>
+
+        <ActionListInPopover actions={actions} />
       </div>
       <Collapsible
-        open={open}
+        open={openCollapsibleCard}
         id="basic-collapsible"
         transition={{ duration: "150ms", timingFunction: "ease-in-out" }}
         expandOnPrint
       >
-        {fields.map((field, index) => (
-          <div
-            key={index}
-            style={{
-              padding: "8px",
-              marginBottom: "4px",
-            }}
-          >
+        <ProductFilter />
+        {fields?.map((field, index) => (
+          <div key={index}>
             <SubCollapsibleCard
               index={index}
               handleRemoveField={handleRemoveField}
@@ -239,15 +273,13 @@ function MediaCardComponent() {
   );
 }
 
-function ActionListInPopover() {
+function ActionListInPopover({ actions }) {
   const [active, setActive] = useState(false);
 
-  const toggleActive = useCallback(() => setActive((active) => !active), []);
+  // Toggle Popover
+  const toggleActive = useCallback(() => setActive((prev) => !prev), []);
 
-  const handleImportedAction = useCallback(() => console.log("Duplicate"), []);
-
-  const handleExportedAction = useCallback(() => console.log("Remove"), []);
-
+  // Popover activator button
   const activator = (
     <button onClick={toggleActive} disclosure>
       <Icon source={MenuHorizontalIcon} tone="base" />
@@ -256,25 +288,8 @@ function ActionListInPopover() {
 
   return (
     <div>
-      <Popover
-        active={active}
-        activator={activator}
-        autofocusTarget="first-node"
-        onClose={toggleActive}
-      >
-        <ActionList
-          actionRole="menuitem"
-          items={[
-            {
-              content: "Import file",
-              onAction: handleImportedAction,
-            },
-            {
-              content: "Export file",
-              onAction: handleExportedAction,
-            },
-          ]}
-        />
+      <Popover active={active} activator={activator} onClose={toggleActive}>
+        <ActionList actionRole="menuitem" items={actions} />
       </Popover>
     </div>
   );
@@ -310,3 +325,45 @@ function TextSelectField({ label }) {
     />
   );
 }
+
+const ProductFilter = () => {
+  const [selectedFilter, setSelectedFilter] = useState("Handle");
+  const [inputValue, setInputValue] = useState("");
+
+  return (
+    <div className="filter-container">
+      <div className="filter-container-header">
+        <div className="filter-text-container">
+          <p className="filter-text">When product</p>
+          <select
+            className="filter-dropdown"
+            value={selectedFilter}
+            onChange={(e) => setSelectedFilter(e.target.value)}
+          >
+            <option value="Handle">Handle</option>
+            <option value="Title">Title</option>
+            <option value="SKU">SKU</option>
+          </select>
+        </div>
+
+        <p className="filter-text">is</p>
+
+        {/* Input field */}
+        <input
+          type="text"
+          className="filter-input"
+          placeholder="Enter product..."
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+        />
+
+        {/* AND & OR buttons */}
+        <button className="filter-button">AND</button>
+        <button className="filter-button">OR</button>
+      </div>
+      <div className="filter-container-footer">
+        <Button className="filter-preview">Preview 1 matching product</Button>
+      </div>
+    </div>
+  );
+};

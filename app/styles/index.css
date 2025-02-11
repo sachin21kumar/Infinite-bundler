@@ -19,7 +19,7 @@
 }
 
 .dropdown-card {
-  margin: 20px 4px;
+  margin: 16px 4px;
   padding: 20px;
   background-color: white;
   border-radius: 10px;
@@ -36,7 +36,7 @@
 }
 
 .sub-dropdown-card {
-  margin: 20px 4px;
+  margin: 12px 4px;
   padding: 12px 10px;
   background-color: white;
   border: 1px solid lightgray;
@@ -94,4 +94,87 @@
   width: 100%;
   color: white !important;
   background-color: cadetblue;
+}
+
+/* option set page css */
+
+.filter-container {
+  margin: 10px 0px;
+  width: 100%;
+  padding: 15px;
+  background-color: #f0f9ff;
+  border-radius: 8px;
+  border: 1px solid cyan;
+}
+
+.filter-container-header {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-text-container {
+  display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+/* Text labels */
+.filter-text {
+  font-size: 14px;
+  color: #333;
+  font-weight: 400;
+}
+
+/* Dropdown */
+.filter-dropdown {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Input Field */
+.filter-input {
+  flex-grow: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 200px;
+}
+
+/* Buttons */
+.filter-button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+.filter-button:hover {
+  background-color: #0056b3;
+}
+
+/* Preview Link */
+.filter-preview {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  margin-left: auto;
+  display: block;
+}
+
+.filter-preview:hover {
+  text-decoration: underline;
 }

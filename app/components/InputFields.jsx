@@ -1,53 +1,43 @@
 import { Checkbox, TextField, ChoiceList } from "@shopify/polaris";
 import { useState, useCallback } from "react";
 
-function TextInputField({ label }) {
-  const [value, setValue] = useState("Jhon Doe");
-
+function TextInputField({ label, value, onChange }) {
   return (
-    <TextField
-      size="medium"
-      autoSize={true}
-      label={label}
+    <input
+      type="text"
+      placeholder="Search..."
       value={value}
-      onChange={""}
+      onChange={onChange}
       autoComplete="off"
+      style={{
+        padding: "12px 16px",
+        fontSize: "16px",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+        width: "100%",
+        outline: "none",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+        transition: "border-color 0.3s ease-in-out",
+      }}
     />
   );
 }
 
-function CheckboxField() {
-  const [data, setData] = useState([
-    { label: "Basic checkbox 1", checked: false },
-    { label: "Basic checkbox 2", checked: false },
-    { label: "Basic checkbox 3", checked: false },
-    { label: "Basic checkbox 4", checked: false },
-    { label: "Basic checkbox 5", checked: false },
-    { label: "Basic checkbox 6", checked: false },
-    { label: "Basic checkbox 7", checked: false },
-    { label: "Basic checkbox 8", checked: false },
-    { label: "Basic checkbox 9", checked: false },
-    { label: "Basic checkbox 10", checked: false },
-  ]);
-
-  const handleCheckboxChange = (index) => {
-    setData((prevData) =>
-      prevData.map((item, i) =>
-        i === index ? { ...item, checked: !item.checked } : item,
-      ),
-    );
-  };
-
+function CheckboxField({ products, handleCheckboxChange }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      {data.map(({ label, checked }, index) => (
-        <Checkbox
-          key={index}
-          label={label}
-          checked={checked}
-          onChange={() => handleCheckboxChange(index)}
-        />
-      ))}
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+      {products?.length > 0 ? (
+        products?.map((item, index) => (
+          <Checkbox
+            key={item.id}
+            label={item.title}
+            checked={item.checked}
+            onChange={() => handleCheckboxChange(index)}
+          />
+        ))
+      ) : (
+        <p>No matching products found.</p>
+      )}
     </div>
   );
 }

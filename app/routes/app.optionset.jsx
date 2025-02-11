@@ -23,6 +23,53 @@ import { TitleBar } from "@shopify/app-bridge-react";
 import "../styles/index.css";
 import ModalComponent from "../components/Modal";
 import TabComponent from "../components/Tabs";
+// products
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { authenticate } from "../shopify.server";
+
+export const loader = async ({ request }) => {
+  const { admin } = await authenticate.admin(request);
+  const url = new URL(request.url);
+  const query = url.searchParams.get("query") || "";
+  const response = await admin.graphql(
+    `#graphql
+    {
+      products(first: 150) {
+        edges {
+          node {
+            id
+            title
+            handle
+            status
+            images(first: 1) {
+              edges {
+                node {
+                  originalSrc
+                  altText
+                }
+              }
+            }
+            variants(first: 1) {
+              edges {
+                node {
+                  id
+                  price
+                  barcode
+                  createdAt
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    `,
+    { query },
+  );
+  const responseJson = await response.json();
+  return json(responseJson.data.products.edges);
+};
 
 export default function OptionSetPage() {
   const [isModalActive, setIsModalActive] = useState(false);
@@ -30,6 +77,8 @@ export default function OptionSetPage() {
     () => setIsModalActive((active) => !active),
     [],
   );
+  const products = useLoaderData();
+
   return (
     <Page>
       <TitleBar title="Option Sets">
@@ -54,7 +103,7 @@ export default function OptionSetPage() {
           active={isModalActive}
           handleChange={handleModalChange}
         >
-          <TabComponent />
+          <TabComponent products={products} />
         </ModalComponent>
       )}
     </Page>
@@ -65,7 +114,6 @@ function CollapsibleCard() {
   const [open, setOpen] = useState(false);
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
   const [fields, setFields] = useState([0]);
-  // Add a new field
   const handleAddField = () => {
     setFields((prevFields) => [...prevFields, fields.length]);
   };

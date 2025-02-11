@@ -4,7 +4,7 @@ import ModalComponent from "./Modal";
 import { TextInputField, CheckboxField } from "./InputFields";
 import "../styles/index.css";
 
-function TabComponent() {
+function TabComponent({ products }) {
   const [selected, setSelected] = useState(0);
   const [isModalActive, setIsModalActive] = useState(false);
 
@@ -46,23 +46,24 @@ function TabComponent() {
       </div>
       <div className="tab-body">
         {selected === 0 ? (
-          <TabOneContainer />
+          <TabOneContainer products={products} />
         ) : selected === 1 ? (
           <TabTwoContainer
             isModalActive={isModalActive}
             handleModalChange={handleModalChange}
+            products={products}
           />
         ) : selected === 2 ? (
-          <TabThreeContainer />
+          <TabThreeContainer products={products} />
         ) : (
-          <TabOneContainer />
+          <TabOneContainer products={products} />
         )}
       </div>
     </div>
   );
 }
 
-const TabOneContainer = () => {
+const TabOneContainer = ({ products }) => {
   return (
     <LegacyCard.Section>
       <Text as="h6" variant={"headingMd"}>
@@ -102,23 +103,54 @@ const TabOneContainer = () => {
   );
 };
 
-const TabTwoContainer = ({ isModalActive, handleModalChange }) => {
+const TabTwoContainer = ({ isModalActive, handleModalChange, products }) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [checkboxData, setCheckboxData] = useState(
+    products?.map(({ node }) => ({ ...node, checked: false })),
+  );
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // handle Checkbox Change
+  const handleCheckboxChange = (index) => {
+    setCheckboxData((prevData) =>
+      prevData.map((item, i) =>
+        i === index ? { ...item, checked: !item.checked } : item,
+      ),
+    );
+  };
+  // handle filters
+  const filteredProducts = checkboxData?.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
   return (
     <ModalComponent
       label={"Add products"}
       active={isModalActive}
       handleChange={handleModalChange}
     >
-      <TextInputField />
+      <TextInputField
+        label="Search Products"
+        value={searchQuery}
+        onChange={handleSearchChange}
+      />
       <div style={{ marginTop: "10px" }}>
-        <CheckboxField />
+        <CheckboxField
+          products={filteredProducts}
+          handleCheckboxChange={handleCheckboxChange}
+        />
       </div>
     </ModalComponent>
   );
 };
 
-const TabThreeContainer = () => {
-  return <CheckboxField />;
+const TabThreeContainer = ({ products }) => {
+  const [productsData, setProductsData] = useState(
+    products?.map(({ node }) => ({ ...node, checked: false })),
+  );
+  return <CheckboxField products={productsData} />;
 };
 
 export default TabComponent;

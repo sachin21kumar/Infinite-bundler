@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "90f1e85483fd7c998700f6bafb4f8dc2"
-application_url = "https://athletes-wildlife-diet-promo.trycloudflare.com"
+application_url = "https://regulations-gd-indonesian-dealing.trycloudflare.com"
 embedded = true
 name = "infinite-bundler"
 handle = "infinite-bundler"
@@ -23,9 +23,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://athletes-wildlife-diet-promo.trycloudflare.com/auth/callback",
-  "https://athletes-wildlife-diet-promo.trycloudflare.com/auth/shopify/callback",
-  "https://athletes-wildlife-diet-promo.trycloudflare.com/api/auth/callback"
+  "https://regulations-gd-indonesian-dealing.trycloudflare.com/auth/callback",
+  "https://regulations-gd-indonesian-dealing.trycloudflare.com/auth/shopify/callback",
+  "https://regulations-gd-indonesian-dealing.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

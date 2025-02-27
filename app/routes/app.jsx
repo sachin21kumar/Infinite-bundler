@@ -28,6 +28,7 @@ export default function App() {
         <Link to="/app/account">Acconts</Link>
         <Link to="/app/help">Helps</Link>
         <Link to="/app/products">products</Link>
+        <Link to="/app/bundle">bundle</Link>
       </NavMenu>
       <Outlet />
     </AppProvider>

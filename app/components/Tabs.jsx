@@ -4,7 +4,7 @@ import ModalComponent from "./Modal";
 import { TextInputField, CheckboxField } from "./InputFields";
 import "../styles/index.css";
 
-function TabComponent({ products, formData, setFormData }) {
+function TabComponent({ currentStep, formData, setFormData, onNext, onPrev }) {
   const [selected, setSelected] = useState(0);
   const [isModalActive, setIsModalActive] = useState(false);
   const handleModalChange = useCallback(
@@ -45,7 +45,29 @@ function TabComponent({ products, formData, setFormData }) {
       </div>
       <div className="tab-body">
         {selected === 0 ? (
-          <TabOneContainer fformData={formData} setFormData={setFormData} />
+          <>
+            {currentStep === 1 && (
+              <TabOneContainer
+                formData={formData}
+                setFormData={setFormData}
+                step={1}
+              />
+            )}
+            {currentStep === 2 && (
+              <TabOneContainer
+                formData={formData}
+                setFormData={setFormData}
+                step={2}
+              />
+            )}
+            {currentStep === 3 && (
+              <TabOneContainer
+                formData={formData}
+                setFormData={setFormData}
+                step={3}
+              />
+            )}
+          </>
         ) : selected === 1 ? (
           <TabTwoContainer
             isModalActive={isModalActive}
@@ -62,16 +84,29 @@ function TabComponent({ products, formData, setFormData }) {
   );
 }
 
-const TabOneContainer = ({ formData, setFormData }) => {
-  const [value, setValue] = useState("");
+const TabOneContainer = ({ formData, setFormData, step }) => {
+  const currentStepData = formData.find((item) => item.step === step);
+  const [value, setValue] = useState(currentStepData?.label_on_product || "");
 
   function handleChange(e) {
-    setValue(e.target.value);
+    const newValue = e.target.value;
+    setValue(newValue);
+
+    // Update form data for the specific step
+    setFormData((prevData) =>
+      prevData.map((item) =>
+        item.step === step ? { ...item, label_on_product: newValue } : item,
+      ),
+    );
   }
-  setFormData(value);
   return (
     <LegacyCard.Section>
-      <Text as="h6" variant={"headingMd"}>
+      <div style={{ marginBottom: "10px", color: "blue" }}>
+        <Text as="h6" variant={"headingSm"} fontWeight={"regular"}>
+          Step {step} of 3
+        </Text>
+      </div>
+      <Text as="p" variant={"headingXs"} fontWeight={"regular"}>
         What should the label for this option be on <br /> the product listing?
       </Text>
       <Grid>
@@ -85,11 +120,9 @@ const TabOneContainer = ({ formData, setFormData }) => {
               justifyContent: "space-between",
             }}
           >
-            <TextInputField
-              label={"Label on Product"}
-              value={value}
-              onChange={handleChange}
-            />
+            <label>Label on Product</label>
+            <TextInputField label={""} value={value} onChange={handleChange} />
+            {step === 2 && <CheckboxField lable={"Same as Label on Product"} />}
             <Text>
               This is the name of the option that appears on the product page as
               an option a customer can select. It should describe the option to

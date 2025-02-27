@@ -10,7 +10,7 @@ function TextInputField({ label, value, onChange }) {
       onChange={onChange}
       autoComplete="off"
       style={{
-        padding: "12px 16px",
+        height: "52px",
         fontSize: "16px",
         border: "1px solid #ccc",
         borderRadius: "8px",
@@ -23,7 +23,7 @@ function TextInputField({ label, value, onChange }) {
   );
 }
 
-function CheckboxField({ products, handleCheckboxChange }) {
+function CheckboxField({ lable, products, handleCheckboxChange }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
       {products?.length > 0 ? (
@@ -36,7 +36,9 @@ function CheckboxField({ products, handleCheckboxChange }) {
           />
         ))
       ) : (
-        <p>No matching products found.</p>
+        <>
+          <Checkbox label={lable} checked={""} onChange={""} />
+        </>
       )}
     </div>
   );

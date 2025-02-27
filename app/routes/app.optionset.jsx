@@ -106,10 +106,27 @@ export default function OptionSetPage() {
       title: "Option Set 7",
     },
   ]);
-  const [formData, setFormData] = useState([]);
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const [formData, setFormData] = useState([
+    { step: 1, label_on_product: "" },
+    { step: 2, label_on_product: "" },
+    { step: 3, label_on_product: "" },
+  ]);
 
   function handleNextChange() {
-    console.log("Form Data:", formData);
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      console.log("Final Form Data:", formData);
+      setIsModalActive(false);
+    }
+  }
+
+  function handlePrevChange() {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+    }
   }
 
   return (
@@ -136,9 +153,11 @@ export default function OptionSetPage() {
           onNext={handleNextChange}
         >
           <TabComponent
-            products={products}
+            currentStep={currentStep}
             formData={formData}
             setFormData={setFormData}
+            onNext={handleNextChange}
+            onPrev={handlePrevChange}
           />
         </ModalComponent>
       )}

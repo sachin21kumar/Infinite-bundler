@@ -79,6 +79,7 @@ export default function OptionSetPage() {
     [],
   );
   const products = useLoaderData();
+  console.log("Products:", products);
   const [cardData, setCardData] = useState([
     {
       id: "1",

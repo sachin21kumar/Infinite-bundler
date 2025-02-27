@@ -23,7 +23,6 @@ export default function HelpPage() {
   return (
     <Page>
       <TitleBar title="Help" />
-
       <Layout>
         <Layout.Section variant="fullWidth">
           <CardComponent

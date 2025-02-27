@@ -123,12 +123,6 @@ export default function OptionSetPage() {
     }
   }
 
-  function handlePrevChange() {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  }
-
   return (
     <Page>
       <TitleBar title="Option Sets">
@@ -151,13 +145,13 @@ export default function OptionSetPage() {
           active={isModalActive}
           handleChange={handleModalChange}
           onNext={handleNextChange}
+          currentStep={currentStep}
         >
           <TabComponent
             currentStep={currentStep}
             formData={formData}
             setFormData={setFormData}
             onNext={handleNextChange}
-            onPrev={handlePrevChange}
           />
         </ModalComponent>
       )}
